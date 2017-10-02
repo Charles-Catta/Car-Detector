@@ -1,0 +1,87 @@
+﻿<h2 id="vehicle-detection-and-tracking">Vehicle Detection and Tracking</h2>
+
+<hr>
+
+<h3 id="histogram-of-oriented-gradients-hog">Histogram of Oriented Gradients (HOG)</h3>
+
+
+
+<h4 id="the-dataset">The Dataset</h4>
+
+<p>The dataset used to train the support vector machine classifier is somewhat diverse and is very close to equal in terms of class-wise distribution meaning that the car vs non-car bias will very low on a well tuned classifier.</p>
+
+<h4 id="1-hog-feature-extraction">1. HOG Feature Extraction</h4>
+
+<p>I first loaded in the car and non-car dataset in memory and picked a sample car image.</p>
+
+<p>The hog feature extraction is implemented in the <em>get_hog_feature</em> function which is used in the <em>feature_extraction</em> function that generates the feature vectors used to classify cars in sliding windows.</p>
+
+<p>After exploring many different combinations of feature extractions, this one gave me the best result in detections.</p>
+
+<p>Here is an example using the <code>YCrCb</code> color space and HOG parameters of <code>orientations=9</code>, <code>pixels_per_cell=(8, 8)</code> and <code>cells_per_block=(2, 2)</code>:</p>
+
+<p><img src="img/hog_example.png" alt="HOG example" title=""></p>
+
+<h4 id="2-final-choice-of-hog-parameters">2. Final choice of HOG parameters.</h4>
+
+<p>I tweaked and tried various parameters and, under the advice of the forums, switched to YCrCb colour space, until I got to a satisfying result out of my SVM’s score on the test dataset. </p>
+
+<h4 id="3-classifier-training">3. Classifier Training</h4>
+
+<p>The SVM training step can be found in the first cell of the <em>Dataset Splitting and Classifier Training</em> section. </p>
+
+<p>I first split my dataset along a 85-15% distribution for training and testing. Then I generated the appropriate ground truth labels in an array and shuffled the data randomly. </p>
+
+<p>My SVM reported a test accuracy of 99.4%.</p>
+
+<h3 id="sliding-window-search">Sliding Window Search</h3>
+
+<h4 id="1-finding-the-right-scales">1. Finding the right scales</h4>
+
+<p>I used the test images in order to tweak my window’s size, min-max height and overlap so that cars in the image would be in as many bounding boxes as possible while reducing the amount of false positives.</p>
+
+<p>Here is the sliding window search working on a picture with and without cars:</p>
+
+<p><img src="img/positive_detection.png" alt="detection" title=""></p>
+
+<p><img src="img/no_detection.png" alt="no detection" title=""></p>
+
+<h4 id="2-pipeline-examples">2. Pipeline examples</h4>
+
+<p>I ended up searching on three scales as it would allow me the detect cars further away in lane and closer to me much better.</p>
+
+<p><img src="img/boxes.png" alt="bounding box around cars" title=""></p>
+
+<p>By adding the combination system which I talk about next, we can see that the pipeline seems to work very well for detecting cars in still images: <br>
+<img src="img/car_detection.png" alt="car detection" title=""></p>
+
+<hr>
+
+<h3 id="video-implementation">Video Implementation</h3>
+
+<p>Here’s a <a href="./output_project_video.mp4">link to my video result</a></p>
+
+<h4 id="filtering-and-combination">Filtering and Combination</h4>
+
+<p>To filter and combine detections, I create a heatmap where each window detection adds one point to its bounding area. This allows me to combine the multitude of boxes by just turning the nonzero heatmap areas into boxes of their own.</p>
+
+<p>By adding up the last 20 heatmap frames and thresholding how high a value needs to be for counting as a detection, I filtered out a good amount of the intermittent false positives.</p>
+
+<p>By using the scipy.ndimage.measurements.label() method, we can combine the difference boxes and draw a rectangle around them, here is the labeled output matrix next to the original image:</p>
+
+<p><img src="img/labels.png" alt="labels" title=""></p>
+
+<hr>
+
+<h3 id="discussion">Discussion</h3>
+
+
+
+<h4 id="room-for-improvements">Room for improvements</h4>
+
+<ul>
+<li><p>I am rerunning my feature extraction many times over the same area instead of applying it to the whole image. Sadly since this requires a lot of code change and I am out of time, I cannot implement it now, but this is a big to do</p></li>
+<li><p>Use a deep learning approach by harvesting the power of fully convolutional neural networks and their implementations like RCNN, YOLO, SSDs. This would allow for a much more robust architecture.</p></li>
+<li><p>Use a larger more diverse car dataset</p></li>
+<li><p>Attempt to use optical flow type systems for tracking once the detection has happened in order to increase performance and allow for real-time feasibility </p></li>
+</ul>
