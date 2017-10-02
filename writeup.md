@@ -3,13 +3,13 @@
 
 ---
 
-###Histogram of Oriented Gradients (HOG)
+### Histogram of Oriented Gradients (HOG)
 
 
 #### The Dataset
 The dataset used to train the support vector machine classifier is somewhat diverse and is very close to equal in terms of class-wise distribution meaning that the car vs non-car bias will very low on a well tuned classifier.
 
-####1. HOG Feature Extraction
+#### 1. HOG Feature Extraction
 I first loaded in the car and non-car dataset in memory and picked a sample car image.
 
 The hog feature extraction is implemented in the *get_hog_feature* function which is used in the *feature_extraction* function that generates the feature vectors used to classify cars in sliding windows.
@@ -20,11 +20,11 @@ Here is an example using the `YCrCb` color space and HOG parameters of `orientat
 
 ![HOG example](img/HOG_example.png)
 
-####2. Final choice of HOG parameters.
+#### 2. Final choice of HOG parameters.
 
 I tweaked and tried various parameters and, under the advice of the forums, switched to YCrCb colour space, until I got to a satisfying result out of my SVM's score on the test dataset. 
 
-####3. Classifier Training
+#### 3. Classifier Training
 
 The SVM training step can be found in the first cell of the *Dataset Splitting and Classifier Training* section. 
 
@@ -34,17 +34,17 @@ My SVM reported a test accuracy of 99.4%.
 
 ### Sliding Window Search
 
-####1. Finding the right scales
+#### 1. Finding the right scales
 
 I used the test images in order to tweak my window's size, min-max height and overlap so that cars in the image would be in as many bounding boxes as possible while reducing the amount of false positives.
 
 Here is the sliding window search working on a picture with and without cars:
 
-![detection](img/positive detection.png)
+![detection](img/positive_detections.png)
 
 ![no detection](img/no_detections.png)
 
-####2. Pipeline examples
+#### 2. Pipeline examples
 
 I ended up searching on three scales as it would allow me the detect cars further away in lane and closer to me much better.
 
@@ -72,7 +72,7 @@ By using the scipy.ndimage.measurements.label() method, we can combine the diffe
 
 ---
 
-###Discussion
+### Discussion
 
 #### Room for improvements
 
