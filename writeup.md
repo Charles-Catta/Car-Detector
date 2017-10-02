@@ -40,15 +40,13 @@ I used the test images in order to tweak my window's size, min-max height and ov
 
 Here is the sliding window search working on a picture with and without cars:
 
-![detection](img/positive_detections.png)
+![bounding box around cars](img/boxes.png)
 
 ![no detection](img/no_detections.png)
 
 #### 2. Pipeline examples
 
 I ended up searching on three scales as it would allow me the detect cars further away in lane and closer to me much better.
-
-![bounding box around cars](img/boxes.png)
 
 By adding the combination system which I talk about next, we can see that the pipeline seems to work very well for detecting cars in still images:
 ![car detection](img/car_detection.png)
