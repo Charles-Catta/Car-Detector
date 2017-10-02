@@ -18,7 +18,7 @@ After exploring many different combinations of feature extractions, this one gav
 
 Here is an example using the `YCrCb` color space and HOG parameters of `orientations=9`, `pixels_per_cell=(8, 8)` and `cells_per_block=(2, 2)`:
 
-![HOG example](img/hog_example.png)
+![HOG example](img/HOG_example.png)
 
 ####2. Final choice of HOG parameters.
 
@@ -40,9 +40,9 @@ I used the test images in order to tweak my window's size, min-max height and ov
 
 Here is the sliding window search working on a picture with and without cars:
 
-![detection](img/positive_detection.png)
+![detection](img/positive detection.png)
 
-![no detection](img/no_detection.png)
+![no detection](img/no_detections.png)
 
 ####2. Pipeline examples
 
